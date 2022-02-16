@@ -1,4 +1,5 @@
 from urllib.request import Request, urlopen
+import math
 
 
 req = Request('https://drand.cloudflare.com/public/latest', headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20130401 Firefox/31.0'})
@@ -20,13 +21,16 @@ roundNumber = int(roundNumber)
 
 #storing in randomness the first second of the list which is the randomness of mydata and seperating it in words and numbers 
 randomness = list[1].split(':')
+randomness = randomness[1].split('"')
 
-#keeping only the number which is stored in the second cell of the list randomness and making it an integer 
+#keeping only the number which is stored in the second cell of the list randomness
 randomnessNumber = randomness[1]
-randomnessNumber = str(randomnessNumber)
 
 #turing the randomness number in binary
-binaryRandomness = ''.join(format(ord(i), '08b') for i in randomnessNumber)
+hexRandomness = "0x" + randomnessNumber
+hexRandomness = int(hexRandomness,16)
+binaryRandomness = bin(hexRandomness)
+binaryRandomness = binaryRandomness[2:]
 
 #storing in a variable the first binary randomness number 
 binaryText = binaryRandomness
@@ -43,10 +47,14 @@ for i in range(1,100):
     list = mydata.split(',')
 
     randomness = list[1].split(':')
+    randomness = randomness[1].split('"')
     randomnessNumber = randomness[1]
     randomnessNumber = str(randomnessNumber)
 
-    binaryRandomness = ''.join(format(ord(i), '08b') for i in randomnessNumber)
+    hexRandomness = "0x" + randomnessNumber
+    hexRandomness = int(hexRandomness,16)
+    binaryRandomness = bin(hexRandomness)
+    binaryRandomness = binaryRandomness[2:]
 
     #storing in binaryText each binary randomness number
     binaryText += binaryRandomness
